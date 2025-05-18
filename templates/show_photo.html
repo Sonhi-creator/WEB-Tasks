@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Загрузка фото</h1>
+<h1>Галерея</h1>
+{% for photo in photos %}
+<img src="{{ photo }}">
+{%endfor%}
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="photo">Выберите файл</label>
@@ -8,5 +11,4 @@
     </div>
     <button type="submit" class="btn btn-primary">Отправить</button>
 </form>
-<img src="/static/img/img.jpg">
 {% endblock %}

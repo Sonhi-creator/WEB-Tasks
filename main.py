@@ -80,15 +80,18 @@ def training(prof):
     return render_template('training.html', prof=prof)
 
 
-@app.route('/load_foto', methods=['POST', 'GET'])
-def load_photo():
+@app.route('/gallery', methods=['POST', 'GET'])
+def gallery():
+    global photo_n, gallery
     if request.method == 'GET':
         return render_template('load_photo.html')
     elif request.method == 'POST':
         photo = request.files['file']  # получение файла
-        with open('static/img/img.jpg', mode='wb') as f:
+        with open('static/img/img.jpg' + str(photo_n), mode='wb') as f:
             f.write(photo.read())
-        return render_template('show_photo.html')
+        gallery.append('static/img/img.jpg' + str(photo_n))
+        photo_n += 1
+        return render_template('show_photo.html', photos=gallery)
 
 
 @app.route('/form_sample', methods=['POST', 'GET'])
@@ -314,7 +317,10 @@ def register():
 
 
 def main():
+    global photo_n, gallery
     db_session.global_init("db/blogs.db")
+    photo_n = 1
+    gallery = []
     # add_user()
     # add_job()
     app.run(port=8080, host='127.0.0.1', debug=True)
